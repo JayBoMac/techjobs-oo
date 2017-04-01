@@ -6,9 +6,10 @@ import org.launchcode.models.data.JobData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
@@ -38,7 +39,7 @@ public class JobController {
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String add(Model model, @Valid JobForm jobForm, Errors errors) {
+    public String add(Model model, @Valid JobForm jobForm, Errors errors, RedirectAttributes attributes) {
 
         // TODO #6 - Validate the JobForm model, and if valid, create a
         // new Job and add it to the jobData data store. Then
@@ -61,11 +62,11 @@ public class JobController {
         // add job to jobData
         jobData.add(newJob);
 
-        // add job to model
-        model.addAttribute("job", newJob);
+        // add job id to redirect
+        attributes.addAttribute("id", newJob.getId());
 
-        // display new job detail
-        return "job-detail";
+        // display new job detail
+        return "redirect:/job";
 
     }
 }
